@@ -9,3 +9,7 @@ func NewService(r Repository) Service {
 		repository: r,
 	}
 }
+
+func (s service) FindContentById(id int) *Blog {
+	return &Blog{}
+}

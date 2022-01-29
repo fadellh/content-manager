@@ -1,6 +1,8 @@
 package blog
 
 import (
+	"content/business/blog"
+
 	"gorm.io/gorm"
 )
 
@@ -12,4 +14,8 @@ func NewGormDB(db *gorm.DB) *Repository {
 	return &Repository{
 		db,
 	}
+}
+
+func (r Repository) FindContentById(id int) *blog.Blog {
+	return &blog.Blog{}
 }

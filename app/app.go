@@ -14,37 +14,13 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func newDatabaseConnection() *gorm.DB {
 
-	// configDB := map[string]string{
-	// 	"DB_Username": os.Getenv("DB_USERNAME"),
-	// 	"DB_Password": os.Getenv("DB_PASSWORD"),
-	// 	"DB_Port":     os.Getenv("DB_PORT"),
-	// 	"DB_Host":     os.Getenv("DB_ADDRESS"),
-	// 	"DB_Name":     os.Getenv("DB_NAME"),
-	// }
-	configDB := map[string]string{
-		"DB_Username": "postgres",
-		"DB_Password": "password",
-		"DB_Port":     "5432",
-		"DB_Host":     "db",
-		"DB_Name":     "link",
-	}
-
-	//connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-	//connectionString := fmt.Sprintf("host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
-		configDB["DB_Host"],
-		configDB["DB_Username"],
-		configDB["DB_Password"],
-		configDB["DB_Name"],
-		configDB["DB_Port"])
-
-	db, e := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	db, e := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 
 	if e != nil {
 		panic(e)
