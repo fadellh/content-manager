@@ -16,6 +16,37 @@ func NewGormDB(db *gorm.DB) *Repository {
 	}
 }
 
+func (c ContentTable) ToBlogDomain() *blog.Blog {
+
+	return &blog.Blog{
+		ID:          c.ID,
+		Title:       c.Title,
+		Content:     c.Content,
+		PublishedAt: c.PublishedAt,
+		CreatedAt:   c.CreatedAt,
+		UpdatedAt:   c.UpdatedAt,
+	}
+
+}
+
+type ContentTable struct {
+	ID          int    `gorm:"column:id;primaryKey"`
+	Content     string `gorm:"column:content"`
+	Title       string `gorm:"column:title"`
+	PublishedAt string `gorm:"column:published_at"`
+	CreatedAt   string `gorm:"column:created_at"`
+	UpdatedAt   string `gorm:"column:updated_at"`
+}
+
 func (r Repository) FindContentById(id int) (*blog.Blog, error) {
-	return &blog.Blog{}, nil
+
+	var content ContentTable
+
+	err := r.DB.Where("id = ?", id).Find(&content).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return content.ToBlogDomain(), nil
 }
