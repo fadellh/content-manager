@@ -16,6 +16,6 @@ func NewGormDB(db *gorm.DB) *Repository {
 	}
 }
 
-func (r Repository) FindContentById(id int) *blog.Blog {
-	return &blog.Blog{}
+func (r Repository) FindContentById(id int) (*blog.Blog, error) {
+	return &blog.Blog{}, nil
 }

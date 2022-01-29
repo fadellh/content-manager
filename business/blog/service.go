@@ -10,6 +10,6 @@ func NewService(r Repository) Service {
 	}
 }
 
-func (s service) FindContentById(id int) *Blog {
-	return &Blog{}
+func (s service) FindContentById(id int) (*Blog, error) {
+	return &Blog{}, nil
 }
