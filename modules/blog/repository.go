@@ -50,3 +50,7 @@ func (r Repository) FindContentById(id int) (*blog.Blog, error) {
 
 	return content.ToBlogDomain(), nil
 }
+
+func (r Repository) FindAllContent() ([]blog.Blog, error) {
+	return []blog.Blog{}, nil
+}

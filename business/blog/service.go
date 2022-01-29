@@ -27,3 +27,20 @@ func (s service) FindContentById(id int) (*Blog, error) {
 
 	return blog, nil
 }
+
+func (s service) FindAllContent() ([]Blog, error) {
+
+	var blogs []Blog
+
+	blogs, err := s.repository.FindAllContent()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(blogs) == 0 {
+		return nil, business.ErrNotFound
+	}
+
+	return blogs, nil
+}

@@ -94,3 +94,71 @@ func Test_FindContentById(t *testing.T) {
 	})
 
 }
+
+func Test_FindAllContent(t *testing.T) {
+
+	type testCase struct {
+		name string
+		want []blog.Blog
+		err  error
+	}
+	tests := []testCase{
+		{
+			name: "test 0 expected got all content",
+			want: []blog.Blog{
+				{
+					ID:      1,
+					Title:   "Hello World",
+					Content: "Hello World",
+				},
+				{
+					ID:      2,
+					Title:   "Number 2",
+					Content: "Number 2 general",
+				},
+			},
+			err: nil,
+		},
+		{
+			name: "test 1 expected err database",
+			err:  business.ErrDatabase,
+		},
+		{
+			name: "test 2 expected err not found",
+			err:  business.ErrNotFound,
+			want: []blog.Blog{},
+		},
+	}
+
+	t.Run(tests[0].name, func(t *testing.T) {
+		blogRepository.On("FindAllContent").Return(tests[0].want, nil).Once()
+		got, err := blogService.FindAllContent()
+
+		assert.NotNil(t, got)
+		assert.Nil(t, err)
+		assert.Equal(t, len(tests[0].want), len(got))
+		assert.Equal(t, tests[0].want[0].Title, got[0].Title)
+		assert.Equal(t, tests[0].want[1].Title, got[1].Title)
+
+	})
+
+	t.Run(tests[1].name, func(t *testing.T) {
+		blogRepository.On("FindAllContent").Return(nil, tests[1].err).Once()
+		got, err := blogService.FindAllContent()
+
+		assert.NotNil(t, err)
+		assert.Nil(t, got)
+		assert.Equal(t, tests[1].err, err)
+
+	})
+
+	t.Run(tests[2].name, func(t *testing.T) {
+		blogRepository.On("FindAllContent").Return(tests[2].want, nil).Once()
+		got, err := blogService.FindAllContent()
+
+		assert.NotNil(t, err)
+		assert.Nil(t, got)
+		assert.Equal(t, tests[2].err, err)
+
+	})
+}
