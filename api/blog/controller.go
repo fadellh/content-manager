@@ -1,7 +1,10 @@
 package blog
 
 import (
+	"content/api/blog/response"
+	"content/api/common"
 	"content/business/blog"
+	"strconv"
 
 	"github.com/labstack/echo"
 )
@@ -17,5 +20,20 @@ func NewHandler(e *echo.Echo, s blog.Service) {
 	if handler == nil {
 		panic("Controller parameter cannot be nil")
 	}
-	e.Group("/blog")
+	b := e.Group("/posts")
+	b.GET("/:id", handler.FindContentById)
+}
+
+func (ctr *Controller) FindContentById(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	blog, err := ctr.service.FindContentById(id)
+
+	if err != nil {
+		return c.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	response := response.NewGetBlogResponse(*blog)
+
+	return c.JSON(common.NewSuccessResponse(response))
 }

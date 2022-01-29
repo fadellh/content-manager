@@ -54,7 +54,7 @@ func newInternalServerErrorResponse() (int, BusinessResponse) {
 func newNotFoundResponse() (int, BusinessResponse) {
 	return http.StatusNotFound, BusinessResponse{
 		errNotFound,
-		"Account Not found",
+		"Data Not found",
 		map[string]interface{}{},
 	}
 }

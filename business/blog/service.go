@@ -1,6 +1,8 @@
 package blog
 
-import "content/business"
+import (
+	"content/business"
+)
 
 type service struct {
 	repository Repository
