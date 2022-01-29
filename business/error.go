@@ -5,7 +5,9 @@ import "errors"
 var (
 	ErrInternalServerError = errors.New("Internal Server Error")
 
-	ErrNotFound = errors.New("Account was not found")
+	ErrDatabase = errors.New("Something wrong in database")
+
+	ErrNotFound = errors.New("Content was not found")
 
 	ErrInvalidSpec = errors.New("Given spec is not valid")
 
