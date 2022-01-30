@@ -2,6 +2,7 @@ package blog
 
 import (
 	"content/business/blog"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -26,11 +27,20 @@ func (c ContentTable) ToBlogDomain() *blog.Blog {
 		CreatedAt:   c.CreatedAt,
 		UpdatedAt:   c.UpdatedAt,
 	}
+}
 
+func ToContentTable(b blog.Blog) *ContentTable {
+	return &ContentTable{
+		Title:       b.Title,
+		Content:     b.Content,
+		PublishedAt: time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+		CreatedAt:   time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+		UpdatedAt:   time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+	}
 }
 
 type ContentTable struct {
-	ID          int    `gorm:"column:id;primaryKey"`
+	ID          int    `gorm:"column:id;primaryKey;autoIncrement"`
 	Content     string `gorm:"column:content"`
 	Title       string `gorm:"column:title"`
 	PublishedAt string `gorm:"column:published_at"`
@@ -67,4 +77,17 @@ func (r Repository) FindAllContent() ([]blog.Blog, error) {
 	}
 
 	return blogs, nil
+}
+
+func (r Repository) InsertContent(b blog.Blog) (int, error) {
+
+	content := ToContentTable(b)
+
+	err := r.DB.Create(&content).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return content.ID, nil
 }

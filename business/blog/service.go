@@ -44,3 +44,16 @@ func (s service) FindAllContent() ([]Blog, error) {
 
 	return blogs, nil
 }
+
+func (s service) InsertContent(b Blog) (*Blog, error) {
+
+	id, err := s.repository.InsertContent(b)
+
+	if err != nil {
+		return nil, business.ErrDatabase
+	}
+
+	blog, err := s.repository.FindContentById(id)
+
+	return blog, nil
+}

@@ -1,6 +1,7 @@
 package blog
 
 import (
+	"content/api/blog/request"
 	"content/api/blog/response"
 	"content/api/common"
 	"content/business/blog"
@@ -23,6 +24,7 @@ func NewHandler(e *echo.Echo, s blog.Service) {
 	b := e.Group("/posts")
 	b.GET("/:id", handler.FindContentById)
 	b.GET("", handler.FindAllContent)
+	b.POST("", handler.InsertContent)
 }
 
 func (ctr *Controller) FindContentById(c echo.Context) error {
@@ -47,6 +49,26 @@ func (ctr *Controller) FindAllContent(c echo.Context) error {
 	}
 
 	response := response.NewGetAllBlogResponse(blogs)
+
+	return c.JSON(common.NewSuccessResponse(response))
+
+}
+
+func (ctr *Controller) InsertContent(c echo.Context) error {
+
+	insertBlogRequest := new(request.InsertBlogRequest)
+
+	if err := c.Bind(insertBlogRequest); err != nil {
+		return c.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	blog, err := ctr.service.InsertContent(request.ToBlogRequest(*insertBlogRequest))
+
+	if err != nil {
+		return c.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	response := response.NewGetBlogResponse(*blog)
 
 	return c.JSON(common.NewSuccessResponse(response))
 

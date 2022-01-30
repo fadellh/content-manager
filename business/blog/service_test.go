@@ -6,6 +6,7 @@ import (
 	blogMock "content/business/blog/mocks"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -161,4 +162,68 @@ func Test_FindAllContent(t *testing.T) {
 		assert.Equal(t, tests[2].err, err)
 
 	})
+}
+
+func Test_InsertContent(t *testing.T) {
+	type parameters struct {
+		blog blog.Blog
+	}
+	type testCase struct {
+		name     string
+		arg      parameters
+		want     blog.Blog
+		wantFind int
+		err      error
+	}
+	tests := []testCase{
+		{
+			name: "test 0 expected got all content",
+			arg: parameters{
+				blog.Blog{
+					Title:   "Hello world cui",
+					Content: "Hello world 3",
+				},
+			},
+			wantFind: 3,
+			want: blog.Blog{
+				ID:          3,
+				Title:       "Hello world cui",
+				Content:     "Hello world 3",
+				PublishedAt: time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+				CreatedAt:   time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+				UpdatedAt:   time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+			},
+			err: nil,
+		},
+		{
+			name: "test 1 expected err database",
+			err:  business.ErrDatabase,
+		},
+	}
+
+	t.Run(tests[0].name, func(t *testing.T) {
+		blogRepository.On("InsertContent").Return(tests[0].wantFind, nil).Once()
+		blogRepository.On("FindContentById", mock.AnythingOfType("int")).Return(&tests[0].want, nil).Once()
+
+		got, err := blogService.InsertContent(tests[0].arg.blog)
+
+		assert.NotNil(t, got)
+		assert.Nil(t, err)
+		assert.Equal(t, tests[0].want.ID, got.ID)
+		assert.Equal(t, tests[0].want.Title, got.Title)
+		assert.Equal(t, tests[0].want.Content, got.Content)
+
+	})
+
+	t.Run(tests[1].name, func(t *testing.T) {
+		blogRepository.On("InsertContent").Return(nil, tests[1].err).Once()
+
+		got, err := blogService.InsertContent(tests[0].arg.blog)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, got)
+		assert.Equal(t, tests[1].err, err)
+
+	})
+
 }

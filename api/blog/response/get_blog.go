@@ -1,6 +1,8 @@
 package response
 
-import "content/business/blog"
+import (
+	"content/business/blog"
+)
 
 type GetBlogResponse struct {
 	Id          int    `json:"id"`
