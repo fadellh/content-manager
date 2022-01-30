@@ -57,3 +57,16 @@ func (s service) InsertContent(b Blog) (*Blog, error) {
 
 	return blog, nil
 }
+
+func (s service) UpdateContent(b Blog) (*Blog, error) {
+
+	err := s.repository.UpdateContent(b)
+
+	if err != nil {
+		return nil, business.ErrDatabase
+	}
+
+	blog, _ := s.FindContentById(b.ID)
+
+	return blog, nil
+}

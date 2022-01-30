@@ -91,3 +91,29 @@ func (r Repository) InsertContent(b blog.Blog) (int, error) {
 
 	return content.ID, nil
 }
+
+func (r Repository) UpdateContent(b blog.Blog) error {
+
+	var content ContentTable
+
+	content.ID = b.ID
+
+	tx := r.DB.Begin()
+
+	err := tx.Model(&content).Updates(ContentTable{
+		Title:     b.Title,
+		Content:   b.Content,
+		UpdatedAt: time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+	}).Error
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Error; err != nil {
+		return gorm.ErrRecordNotFound
+	}
+
+	return tx.Commit().Error
+}
