@@ -22,6 +22,7 @@ func NewHandler(e *echo.Echo, s blog.Service) {
 	}
 	b := e.Group("/posts")
 	b.GET("/:id", handler.FindContentById)
+	b.GET("", handler.FindAllContent)
 }
 
 func (ctr *Controller) FindContentById(c echo.Context) error {
@@ -36,4 +37,17 @@ func (ctr *Controller) FindContentById(c echo.Context) error {
 	response := response.NewGetBlogResponse(*blog)
 
 	return c.JSON(common.NewSuccessResponse(response))
+}
+
+func (ctr *Controller) FindAllContent(c echo.Context) error {
+	blogs, err := ctr.service.FindAllContent()
+
+	if err != nil {
+		return c.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	response := response.NewGetAllBlogResponse(blogs)
+
+	return c.JSON(common.NewSuccessResponse(response))
+
 }
