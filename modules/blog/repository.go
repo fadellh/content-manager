@@ -52,5 +52,19 @@ func (r Repository) FindContentById(id int) (*blog.Blog, error) {
 }
 
 func (r Repository) FindAllContent() ([]blog.Blog, error) {
-	return []blog.Blog{}, nil
+
+	var contents []ContentTable
+	var blogs []blog.Blog
+
+	err := r.DB.Find(&contents).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range contents {
+		blogs = append(blogs, *item.ToBlogDomain())
+	}
+
+	return blogs, nil
 }

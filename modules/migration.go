@@ -18,6 +18,14 @@ func InitMigrate(db *gorm.DB) {
 			CreatedAt:   "2021-10-13T05:07:57.208Z",
 			UpdatedAt:   "2021-10-13T05:07:57.208Z",
 		}).Error
+		err = db.FirstOrCreate(&blog.ContentTable{
+			ID:          2,
+			Title:       "Number 2",
+			Content:     "Number 2 dang dang",
+			PublishedAt: "2021-10-13T05:07:57.208Z",
+			CreatedAt:   "2021-10-13T05:07:57.208Z",
+			UpdatedAt:   "2021-10-13T05:07:57.208Z",
+		}).Error
 	}
 
 }
