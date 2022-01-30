@@ -30,6 +30,7 @@ func NewHandler(e *echo.Echo, s blog.Service) {
 	b.GET("", handler.FindAllContent)
 	b.POST("", handler.InsertContent)
 	b.PUT("/:id", handler.UpdateContent)
+	b.DELETE("/:id", handler.DeleteContent)
 
 }
 
@@ -89,6 +90,21 @@ func (ctr *Controller) UpdateContent(c echo.Context) error {
 	}
 
 	blog, err := ctr.service.UpdateContent(request.ToBlogUpdateRequest(*updateBlogRequest, id))
+
+	if err != nil {
+		return c.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	response := response.NewGetBlogResponse(*blog)
+
+	return c.JSON(common.NewSuccessResponse(response))
+
+}
+
+func (ctr *Controller) DeleteContent(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	blog, err := ctr.service.DeleteContent(id)
 
 	if err != nil {
 		return c.JSON(common.NewErrorBusinessResponse(err))

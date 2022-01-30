@@ -61,7 +61,7 @@ func Test_FindContentById(t *testing.T) {
 				Title:   "",
 				Content: "",
 			},
-			err: business.ErrDatabase,
+			err: business.ErrNotFound,
 		},
 	}
 	t.Run(tests[0].name, func(t *testing.T) {
@@ -285,6 +285,80 @@ func Test_UpdateContent(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Nil(t, got)
 		assert.Equal(t, tests[1].err, err)
+
+	})
+
+}
+
+func Test_DeleteContent(t *testing.T) {
+	type parameters struct {
+		id int
+	}
+	type testCase struct {
+		name string
+		arg  parameters
+		want blog.Blog
+		err  error
+	}
+	tests := []testCase{
+		{
+			name: "test 0 expected got all content",
+			arg:  parameters{3},
+			want: blog.Blog{
+				ID:        3,
+				Title:     "Hello world cui update",
+				Content:   "Hello world 3",
+				UpdatedAt: time.Now().UTC().Format("2006-01-02T15:04:05Z"),
+			},
+			err: nil,
+		},
+		{
+			name: "test 1 expected err database",
+			err:  business.ErrDatabase,
+		},
+		{
+			name: "test 2 expected err not found",
+			arg:  parameters{3},
+			want: blog.Blog{
+				ID:      0,
+				Title:   "",
+				Content: "",
+			},
+			err: business.ErrNotFound,
+		},
+	}
+
+	t.Run(tests[0].name, func(t *testing.T) {
+		blogRepository.On("DeleteContent").Return(&tests[0].want, nil).Once()
+
+		got, err := blogService.DeleteContent(tests[0].arg.id)
+
+		assert.NotNil(t, got)
+		assert.Nil(t, err)
+		assert.Equal(t, tests[0].want.ID, got.ID)
+		assert.Equal(t, tests[0].want.Title, got.Title)
+		assert.Equal(t, tests[0].want.Content, got.Content)
+
+	})
+
+	t.Run(tests[1].name, func(t *testing.T) {
+		blogRepository.On("DeleteContent").Return(nil, tests[1].err).Once()
+
+		got, err := blogService.DeleteContent(tests[0].arg.id)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, got)
+		assert.Equal(t, tests[1].err, err)
+
+	})
+
+	t.Run(tests[2].name, func(t *testing.T) {
+		blogRepository.On("DeleteContent").Return(&tests[2].want, nil).Once()
+		got, err := blogService.DeleteContent(tests[2].arg.id)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, got)
+		assert.Equal(t, tests[2].err, err)
 
 	})
 

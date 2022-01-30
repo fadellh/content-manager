@@ -88,3 +88,25 @@ func (_m Repository) UpdateContent(b blog.Blog) error {
 
 	return r1
 }
+
+func (_m Repository) DeleteContent(id int) (*blog.Blog, error) {
+	ret := _m.Called()
+
+	var r0 *blog.Blog
+	if rf, ok := ret.Get(0).(func(id int) *blog.Blog); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*blog.Blog)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(id int) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}

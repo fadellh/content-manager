@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type Repository struct {
@@ -116,4 +117,16 @@ func (r Repository) UpdateContent(b blog.Blog) error {
 	}
 
 	return tx.Commit().Error
+}
+
+func (r Repository) DeleteContent(id int) (*blog.Blog, error) {
+
+	var contentTable ContentTable
+
+	err := r.DB.Clauses(clause.Returning{}).Where("id = ?", id).Delete(&contentTable).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return contentTable.ToBlogDomain(), nil
 }

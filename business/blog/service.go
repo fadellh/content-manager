@@ -70,3 +70,18 @@ func (s service) UpdateContent(b Blog) (*Blog, error) {
 
 	return blog, nil
 }
+
+func (s service) DeleteContent(id int) (*Blog, error) {
+
+	blog, err := s.repository.DeleteContent(id)
+
+	if err != nil {
+		return nil, business.ErrDatabase
+	}
+
+	if blog.ID == 0 {
+		return nil, business.ErrNotFound
+	}
+
+	return blog, nil
+}
