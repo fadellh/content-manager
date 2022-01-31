@@ -14,7 +14,7 @@ docker-compose up --build
 
 ## Run App Manually
 
-### 1. Install gcc for sqlite database based on environment
+### 1. Install gcc for sqlite database based on os
 
 Read more on this link https://github.com/mattn/go-sqlite3#google-cloud-platform
 
