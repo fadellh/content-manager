@@ -36,10 +36,6 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newNotFoundResponse()
 	case business.ErrInvalidSpec:
 		return newValidationResponse(err.Error())
-	case business.ErrBalanceNotEnough:
-		return newBalanceNotEnough(err.Error())
-	case business.ErrUpdateBalance:
-		return newErrUpdateBalance(err.Error())
 	}
 }
 
@@ -63,22 +59,6 @@ func newValidationResponse(message string) (int, BusinessResponse) {
 	return http.StatusBadRequest, BusinessResponse{
 		errInvalidSpec,
 		"Validation failed " + message,
-		map[string]interface{}{},
-	}
-}
-
-func newBalanceNotEnough(message string) (int, BusinessResponse) {
-	return http.StatusBadRequest, BusinessResponse{
-		errBalance,
-		message,
-		map[string]interface{}{},
-	}
-}
-
-func newErrUpdateBalance(message string) (int, BusinessResponse) {
-	return http.StatusServiceUnavailable, BusinessResponse{
-		errUpdate,
-		message,
 		map[string]interface{}{},
 	}
 }

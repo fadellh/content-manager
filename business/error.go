@@ -3,15 +3,11 @@ package business
 import "errors"
 
 var (
-	ErrInternalServerError = errors.New("Internal Server Error")
+	ErrInternalServerError = errors.New("internal server error")
 
-	ErrDatabase = errors.New("Something wrong in database")
+	ErrDatabase = errors.New("something wrong in database")
 
-	ErrNotFound = errors.New("Content was not found")
+	ErrNotFound = errors.New("content was not found")
 
-	ErrInvalidSpec = errors.New("Given spec is not valid")
-
-	ErrBalanceNotEnough = errors.New("Balance is not enough")
-
-	ErrUpdateBalance = errors.New("Error update balance")
+	ErrInvalidSpec = errors.New("given spec is not valid")
 )
