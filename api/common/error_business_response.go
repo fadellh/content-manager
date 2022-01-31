@@ -42,7 +42,7 @@ func errorMapping(err error) (int, BusinessResponse) {
 func newInternalServerErrorResponse() (int, BusinessResponse) {
 	return http.StatusInternalServerError, BusinessResponse{
 		errInternalServerError,
-		"Internal server error",
+		"internal server error",
 		map[string]interface{}{},
 	}
 }
@@ -50,7 +50,7 @@ func newInternalServerErrorResponse() (int, BusinessResponse) {
 func newNotFoundResponse() (int, BusinessResponse) {
 	return http.StatusNotFound, BusinessResponse{
 		errNotFound,
-		"Data Not found",
+		"data not found",
 		map[string]interface{}{},
 	}
 }
@@ -58,7 +58,7 @@ func newNotFoundResponse() (int, BusinessResponse) {
 func newValidationResponse(message string) (int, BusinessResponse) {
 	return http.StatusBadRequest, BusinessResponse{
 		errInvalidSpec,
-		"Validation failed " + message,
+		"validation failed " + message,
 		map[string]interface{}{},
 	}
 }

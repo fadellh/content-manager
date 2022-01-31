@@ -18,7 +18,7 @@ type ControllerResponse struct {
 func NewBadRequestResponse(msg string) (int, ControllerResponse) {
 	return http.StatusBadRequest, ControllerResponse{
 		ErrBadRequest,
-		"Bad request " + msg,
+		"bad request " + msg,
 		map[string]interface{}{},
 	}
 }
@@ -26,7 +26,7 @@ func NewBadRequestResponse(msg string) (int, ControllerResponse) {
 func NewForbiddenResponse() (int, ControllerResponse) {
 	return http.StatusForbidden, ControllerResponse{
 		ErrForbidden,
-		"Forbidden",
+		"forbidden",
 		map[string]interface{}{},
 	}
 }
