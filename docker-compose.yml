@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  content-manager:
+    build: .
+    ports:
+      - 2801:2801
+  db:
+    container_name: sqlite3
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
