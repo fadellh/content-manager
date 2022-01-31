@@ -202,8 +202,7 @@ func Test_InsertContent(t *testing.T) {
 	}
 
 	t.Run(tests[0].name, func(t *testing.T) {
-		blogRepository.On("InsertContent").Return(tests[0].wantFind, nil).Once()
-		blogRepository.On("FindContentById", mock.AnythingOfType("int")).Return(&tests[0].want, nil).Once()
+		blogRepository.On("InsertContent").Return(&tests[0].want, nil).Once()
 
 		got, err := blogService.InsertContent(tests[0].arg.blog)
 

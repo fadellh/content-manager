@@ -47,13 +47,11 @@ func (s service) FindAllContent() ([]Blog, error) {
 
 func (s service) InsertContent(b Blog) (*Blog, error) {
 
-	id, err := s.repository.InsertContent(b)
+	blog, err := s.repository.InsertContent(b)
 
 	if err != nil {
 		return nil, business.ErrDatabase
 	}
-
-	blog, err := s.repository.FindContentById(id)
 
 	return blog, nil
 }

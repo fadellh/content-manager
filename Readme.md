@@ -36,6 +36,8 @@ go run main.go
 
 ### Request
 
+--Port default:2801
+
 `GET /health`
 
     curl --location --request GET 'http://localhost:2801/health'

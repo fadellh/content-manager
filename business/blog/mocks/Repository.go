@@ -54,15 +54,15 @@ func (_m Repository) FindAllContent() ([]blog.Blog, error) {
 	return r0, r1
 }
 
-func (_m Repository) InsertContent(b blog.Blog) (int, error) {
+func (_m Repository) InsertContent(b blog.Blog) (*blog.Blog, error) {
 	ret := _m.Called()
 
-	var r0 int
-	if rf, ok := ret.Get(0).(func(b blog.Blog) int); ok {
+	var r0 *blog.Blog
+	if rf, ok := ret.Get(0).(func(b blog.Blog) *blog.Blog); ok {
 		r0 = rf(b)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(int)
+			r0 = ret.Get(0).(*blog.Blog)
 		}
 	}
 

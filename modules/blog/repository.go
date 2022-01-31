@@ -80,17 +80,17 @@ func (r Repository) FindAllContent() ([]blog.Blog, error) {
 	return blogs, nil
 }
 
-func (r Repository) InsertContent(b blog.Blog) (int, error) {
+func (r Repository) InsertContent(b blog.Blog) (*blog.Blog, error) {
 
 	content := ToContentTable(b)
 
 	err := r.DB.Create(&content).Error
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return content.ID, nil
+	return content.ToBlogDomain(), nil
 }
 
 func (r Repository) UpdateContent(b blog.Blog) error {

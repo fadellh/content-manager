@@ -11,7 +11,7 @@ type Service interface {
 type Repository interface {
 	FindContentById(id int) (*Blog, error)
 	FindAllContent() ([]Blog, error)
-	InsertContent(b Blog) (int, error)
+	InsertContent(b Blog) (*Blog, error)
 	UpdateContent(b Blog) error
 	DeleteContent(id int) (*Blog, error)
 }
